@@ -1,0 +1,48 @@
+version: "3.5"
+services:
+  db-coop-auth:
+    image: mysql:8.0.30
+    volumes:
+      - ./storage/db.sql:/data/application/db.sql
+      - coop-auth-db:/var/lib/mysql
+    ports:
+      - '33323:3306'
+    command: --init-file /data/application/db.sql
+    environment:
+      MYSQL_DATABASE: coop-auth
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+      MYSQL_ROOT_PASSWORD: admin
+    networks:
+      - coop-auth-net
+
+  coop-auth:
+    build:
+      context: ./
+      dockerfile: Dockerfile.dev
+    environment:
+      - PHP_OPCACHE_VALIDATE_TIMESTAMPS=1
+    depends_on:
+      - db-coop-auth
+    volumes:
+      - .:/var/www/html/
+    ports:
+      - 5002:80
+    networks:
+      - coop-auth-net
+    entrypoint: sh -c 'sleep 3 && apache2-foreground'
+
+  smtp-server:
+    image: inbucket/inbucket:3.0.3
+    ports:
+      - '8000:9000'
+    networks:
+      - coop-auth-net
+
+volumes:
+  coop-auth-db:
+
+networks:
+  coop-auth-net:
+    external: true
+    name: coop-auth-net

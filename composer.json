@@ -1,0 +1,21 @@
+{
+    "name": "a46/coop-auth",
+    "autoload": {
+        "psr-4": {
+            "a46\\coop-auth\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Alfonso M. Evangelista",
+            "email": "a46.evangelista@gmail.com"
+        }
+    ],
+    "require": {
+        "slim/slim": "4.*",
+        "slim/psr7": "^1.6",
+        "firebase/php-jwt": "6.4.0",
+        "ramsey/uuid": "^4.7",
+        "phpmailer/phpmailer": "^6.8"
+    }
+}
