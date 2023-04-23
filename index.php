@@ -30,11 +30,11 @@ require 'src/controllers/auth.php';
 require 'src/controllers/user.php';
 
 // Utils
+require "config.php";
 require "src/utils/body.php";
 require "src/utils/json.php";
 require "src/utils/auth.php";
 require "src/utils/password.php";
-require "src/utils/config.php";
 require "storage/db.class.php";
 require "storage/dbconn.php";
 

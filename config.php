@@ -20,6 +20,6 @@
     public static $SMTP_PASSWORD = "password";
     public static $SMTP_HOST = "smtp-server";
     public static $SMTP_USERNAME = "coop@coopincuba.com";
-    public static $SMTP_PORT = 2500;
     public static $SMTP_FROM = "Coopincuba";
+    public static $SMTP_PORT = 2500;
 }

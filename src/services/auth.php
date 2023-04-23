@@ -36,14 +36,13 @@ class AuthService implements IAuthService
 
         // Send email with reset code
         $link = "http://localhost:8000/recuperacion?code={$id}";
+
+        // Buscar la platilla hmtl y reemplazar el link.
+        $contents = file_get_contents("./templates/forgot.html");
+        $contents = str_replace(array('{{link}}'), array($link), $contents);
+
         $ms = new MailService();
-        $ms->Send(
-            "Recuperación de contraseña",
-            'COOPINCUBA</b>,</br>
-        Usted ha solicitado la recuperacion de contrasena.
-        Para proceder a esto haga click aqui <a href="' . $link . '">aqui.</a>',
-            $user->email
-        );
+        $ms->Send("Recuperación de contraseña", $contents, $user->email);
 
         return array("email" => $user->email);
     }
