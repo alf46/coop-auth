@@ -17,18 +17,12 @@ composer install
 
 #### Linux Startup
 ```bash
-# set environment variables
-cp example.env .env
-
 # run app
 make dev
 ```
 
 #### Windows Startup
 ```bash
-# set environment variables
-copy example.env .env
-
 # run app
 docker compose up
 ```
