@@ -1,8 +1,5 @@
 FROM php:8.1.9-apache
 
-RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/conf.d/php.ini"
-COPY opcache.ini "$PHP_INI_DIR/conf.d/opcache.ini"
-
 WORKDIR /var/www/html
 
 # update

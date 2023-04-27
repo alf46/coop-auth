@@ -4,8 +4,6 @@
     var $fechmode = PDO::FETCH_ASSOC;
     var $error;
     var $sql_query;
-    var $sql_array;
-    var $sql_row;
 
     //Opciones de conexion mysql:
     /*
@@ -18,12 +16,8 @@
     */
     function Connect($emulate = false, $buffered = true)
     {
-        $dsn = '';
-        $pwd = '';
-        $usr = '';
-
         // conectarse a la db
-        $dsn = 'mysql:host=' . Config::$DATABASE_HOST . ';dbname=' . Config::$DATABASE_NAME . '';
+        $dsn = 'mysql:host=' . Config::$DATABASE_HOST . ';dbname=' . Config::$DATABASE_NAME;
         $pwd = Config::$DATABASE_PASSWORD;
         $usr = Config::$DATABASE_USERNAME;
 
@@ -54,19 +48,15 @@
         $consulta = $this->conexion->prepare($sql);
         $consulta->setFetchMode($this->fechmode);
         $retorna = false;
-        $err = '';
 
         try {
             $retorna = $consulta->execute($array);
         } catch (PDOException $e) {
-            $err = $e->getMessage();
+            // $err = $e->getMessage();
         }
 
         if (!$retorna) {
             $errorinfo = $consulta->ErrorInfo();
-            //if(conf_debug){
-            //print_r($errorinfo);
-
             if ((int) $errorinfo[2] == 1172) {
                 print_r($array);
             }
@@ -87,7 +77,6 @@
         return $this->sql_query->rowCount();
     }
 
-    //Ultimo ID insertado
     function LastInsertID()
     {
         return $this->conexion->lastInsertId();

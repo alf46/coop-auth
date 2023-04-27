@@ -1,10 +1,5 @@
 <?php
 
-// Enabling CORS
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Headers: authorization, content-type");
-header("Access-Control-Allow-Methods: PUT");
-
 use Slim\Factory\AppFactory;
 use Slim\Routing\RouteCollectorProxy;
 use Psr\Log\LoggerInterface;
@@ -41,6 +36,14 @@ require "storage/dbconn.php";
 $app = AppFactory::create();
 $app->addRoutingMiddleware();
 
+$app->add(function ($request, $handler) {
+    $response = $handler->handle($request);
+    return $response
+        ->withHeader('Access-Control-Allow-Origin', '*')
+        ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
+        ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+});
+
 $customErrorHandler = function ($request, Throwable $exception, bool $displayErrorDetails, bool $logErrors, bool $logErrorDetails, ?LoggerInterface $logger = null) use ($app) {
     $payload = ['error' => $exception->getMessage()];
     $response = $app->getResponseFactory()->createResponse();
@@ -52,7 +55,7 @@ $errorMiddleware->setDefaultErrorHandler($customErrorHandler);
 $app->addBodyParsingMiddleware();
 
 $app->group("/api/v1/auth", function (RouteCollectorProxy $group) {
-    $group->post('/', \AuthController::class . ':Login');
+    $group->post('', \AuthController::class . ':Login');
     $group->post('/forgot', \AuthController::class . ':Forgot');
     $group->post('/recovery', \AuthController::class . ':Recovery');
 });
