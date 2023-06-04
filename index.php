@@ -4,6 +4,11 @@ use Slim\Factory\AppFactory;
 use Slim\Routing\RouteCollectorProxy;
 use Psr\Log\LoggerInterface;
 
+// Enabling CORS
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Headers: authorization, content-type");
+header("Access-Control-Allow-Methods: PUT");
+
 require __DIR__ . '/vendor/autoload.php';
 require "src/middlewares/auth.php";
 
@@ -35,14 +40,6 @@ require "storage/dbconn.php";
 
 $app = AppFactory::create();
 $app->addRoutingMiddleware();
-
-$app->add(function ($request, $handler) {
-    $response = $handler->handle($request);
-    return $response
-        ->withHeader('Access-Control-Allow-Origin', '*')
-        ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-        ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
-});
 
 $customErrorHandler = function ($request, Throwable $exception, bool $displayErrorDetails, bool $logErrors, bool $logErrorDetails, ?LoggerInterface $logger = null) use ($app) {
     $payload = ['error' => $exception->getMessage()];

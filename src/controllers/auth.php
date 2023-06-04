@@ -37,7 +37,7 @@
        {
               $username = $_SESSION['sub'];
               $email = $_SESSION['email'];
-              $role = $_SESSION['role'];
+              $role = $_SESSION['role']; // adm, socio
               return json($res, array("username" => $username, "email" => $email, "role" => $role));
        }
 }
