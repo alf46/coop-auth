@@ -4,11 +4,6 @@ use Slim\Factory\AppFactory;
 use Slim\Routing\RouteCollectorProxy;
 use Psr\Log\LoggerInterface;
 
-// Enabling CORS
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Headers: authorization, content-type");
-header("Access-Control-Allow-Methods: PUT");
-
 require __DIR__ . '/vendor/autoload.php';
 require "src/middlewares/auth.php";
 
@@ -44,8 +39,25 @@ $app->addRoutingMiddleware();
 $customErrorHandler = function ($request, Throwable $exception, bool $displayErrorDetails, bool $logErrors, bool $logErrorDetails, ?LoggerInterface $logger = null) use ($app) {
     $payload = ['error' => $exception->getMessage()];
     $response = $app->getResponseFactory()->createResponse();
-    return json($response, $payload);
+    $code = $exception->getCode();
+    if ($code < 100 && $code > 599) {
+        $code = 500;
+    }
+    http_response_code($code);
+    return json($response, $payload, $code);
 };
+
+$app->options('/{routes:.+}', function ($request, $response, $args) {
+    return $response;
+});
+
+$app->add(function ($request, $handler) {
+    $response = $handler->handle($request);
+    return $response
+        ->withHeader('Access-Control-Allow-Origin', '*')
+        ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
+        ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+});
 
 $errorMiddleware = $app->addErrorMiddleware(false, false, false);
 $errorMiddleware->setDefaultErrorHandler($customErrorHandler);
