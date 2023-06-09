@@ -21,7 +21,7 @@
               $user = new UserData();
               $user->username = get($body, "username", true);
               $user->password = get($body, "password", true);
-              $user->email = get($body, "email", true);
+              $user->email = get($body, "email", false);
               $user->role = get($body, "role", true);
 
               $result = $this->us->Create($user);

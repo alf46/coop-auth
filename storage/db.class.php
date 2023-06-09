@@ -43,7 +43,7 @@
         return $this->error;
     }
 
-    function Execute($sql, $array = NULL)
+    function Execute($sql, $array = NULL, $force = false)
     {
         $consulta = $this->conexion->prepare($sql);
         $consulta->setFetchMode($this->fechmode);
@@ -52,7 +52,11 @@
         try {
             $retorna = $consulta->execute($array);
         } catch (PDOException $e) {
-            // $err = $e->getMessage();
+            if ($e->getCode() == 23000) {
+                if ($force == true) {
+                    $retorna = true;
+                }
+            }
         }
 
         if (!$retorna) {

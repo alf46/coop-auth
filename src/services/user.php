@@ -8,7 +8,7 @@
         $hash = $hasher->hashPassword($user->password);
 
         $query = "INSERT INTO `user` (`username`, `password`,`email`, `role`) VALUES (?,?,?,?)";
-        $result = $db->Execute($query, array($user->username, $hash, $user->email, $user->role));
+        $result = $db->Execute($query, array($user->username, $hash, $user->email, $user->role), true);
 
         if ($result) {
             return $this->Get($user->username);
