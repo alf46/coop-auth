@@ -17,9 +17,9 @@
     public static $DATABASE_PORT = 3306;
 
     // Configuracion SMTP.
-    public static $SMTP_PASSWORD = "password";
-    public static $SMTP_HOST = "smtp-server";
-    public static $SMTP_USERNAME = "coop@coopincuba.com";
+    public static $SMTP_PASSWORD = "Coopincub@2023";
+    public static $SMTP_HOST = "smtp.titan.email";
+    public static $SMTP_USERNAME = "servicio@coopincuba.com";
     public static $SMTP_FROM = "Coopincuba";
-    public static $SMTP_PORT = 2500;
+    public static $SMTP_PORT = 587;
 }

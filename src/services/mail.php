@@ -13,16 +13,18 @@ class MailService implements IMailService
             $mail->Username = Config::$SMTP_USERNAME;
             $mail->Password = Config::$SMTP_PASSWORD;
             $mail->Port = Config::$SMTP_PORT;
-
-            // Recipients
+            $mail->SMTPAuth = true;
             $mail->setFrom(Config::$SMTP_USERNAME, Config::$SMTP_FROM);
-            $mail->addAddress($to, $name); 
+            $mail->CharSet = "UTF-8";
+            
+            // Recipients
+            $mail->addAddress($to);
 
             // Content
             $mail->Subject = $subject;
             $mail->isHTML(true);
             $mail->msgHTML($body);
-            
+
             $mail->send();
         } catch (FFI\Exception $e) {
             print_r("Message could not be sent. Mailer Error: {$mail->ErrorInfo}");
