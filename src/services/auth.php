@@ -35,7 +35,7 @@ class AuthService
         $id = $this->createForgotCode($user->username, $user->email);
 
         // Send email with reset code
-        $link = "http://localhost:8000/recuperacion?code={$id}";
+        $link = Config::$ADMIN_SITE_URL . "/recuperacion?code={$id}";
 
         // Buscar la platilla hmtl y reemplazar el link.
         $contents = file_get_contents("./templates/forgot.html");
@@ -57,6 +57,20 @@ class AuthService
 
         // Set to used token
         $this->updateForgotCode($forgot_code);
+    }
+
+    public function ChangePassword($currentPassword, $newPassword)
+    {
+        $username = $_SESSION['sub'];
+        $user = $this->us->GetWithPassword($username);
+
+        // Validate current password
+        $hasher = new PasswordHasher();
+        if ($hasher->validatePassword($currentPassword, $user->password)) {
+            $this->us->UpdatePassword($username, $newPassword);
+        } else {
+            throw new Exception("invalid current password", 400);
+        }
     }
 
     private function createForgotCode($username, $email)
@@ -92,7 +106,7 @@ class AuthService
     private function updateForgotCode($forgot_code)
     {
         global $db;
-        $query = "UPDATE `reset_password` SET `used`=1 WHERE `id`=?";
+        $query = "UPDATE `reset_password` SET `used`=0 WHERE `id`=?";
         $result = $db->Execute($query, array($forgot_code));
 
         if (!$result) {

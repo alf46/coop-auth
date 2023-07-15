@@ -36,8 +36,9 @@
        public function ChangePassword($req, $res)
        {
               $body = $req->getParsedBody();
-              // $password = get($body, "password", true);
-              // $this->as->Recovery($code, $password);
+              $currentPassword = get($body, "current_password", true);
+              $newPassword = get($body, "new_password", true);
+              $this->as->ChangePassword($currentPassword, $newPassword);
               return json($res, null);
        }
 

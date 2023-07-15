@@ -61,8 +61,7 @@ $app->addBodyParsingMiddleware();
 $app->group("/api/v1/auth", function (RouteCollectorProxy $group) {
     $group->post('', \AuthController::class . ':Login');
     $group->post('/forgot', \AuthController::class . ':Forgot');
-    $group->post('/recovery', \AuthController::class . ':Recovery');
-    $group->post('/change-password', \AuthController::class . ':ChangePassword');
+    $group->put('/recovery', \AuthController::class . ':Recovery');
 });
 
 $app->group("/api/v1/user", function (RouteCollectorProxy $group) {
@@ -72,6 +71,7 @@ $app->group("/api/v1/user", function (RouteCollectorProxy $group) {
 
 $app->group("/api/v1/me", function (RouteCollectorProxy $group) {
     $group->get('', \AuthController::class . ':Info');
+    $group->put('/change-password', \AuthController::class . ':ChangePassword');
 })->add(AuthMiddleware::class);
 
 $app->run();

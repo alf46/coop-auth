@@ -9,6 +9,8 @@
     // Duración del token de recuperación de contraseña (5 minutos).
     public static $FORGOT_DURATION = 3000;
 
+    public static $ADMIN_SITE_URL = "http://localhost:3000";
+
     // Configuracion de la base de datos
     public static $DATABASE_NAME = "coop-auth";
     public static $DATABASE_HOST = "db-coop-auth";
