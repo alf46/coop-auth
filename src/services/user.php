@@ -1,4 +1,4 @@
-<?php class UserService implements IUserService
+<?php class UserService
 {
     public function Create(UserData $user): UserDetailResponse
     {

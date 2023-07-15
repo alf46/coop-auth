@@ -10,11 +10,6 @@ require "src/middlewares/auth.php";
 // Models
 require "src/models/user.php";
 
-// Contracts
-require "src/contracts/auth.php";
-require "src/contracts/user.php";
-require "src/contracts/mail.php";
-
 // Services
 require "src/services/auth.php";
 require "src/services/user.php";
@@ -39,7 +34,7 @@ $app->addRoutingMiddleware();
 $customErrorHandler = function ($request, Throwable $exception, bool $displayErrorDetails, bool $logErrors, bool $logErrorDetails, ?LoggerInterface $logger = null) use ($app) {
     $payload = ['error' => $exception->getMessage()];
     $response = $app->getResponseFactory()->createResponse();
-    $code = $exception->getCode();
+    $code = 500; //$exception->getCode();
     if ($code < 100 && $code > 599) {
         $code = 500;
     }
@@ -67,6 +62,7 @@ $app->group("/api/v1/auth", function (RouteCollectorProxy $group) {
     $group->post('', \AuthController::class . ':Login');
     $group->post('/forgot', \AuthController::class . ':Forgot');
     $group->post('/recovery', \AuthController::class . ':Recovery');
+    $group->post('/change-password', \AuthController::class . ':ChangePassword');
 });
 
 $app->group("/api/v1/user", function (RouteCollectorProxy $group) {

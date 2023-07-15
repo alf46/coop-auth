@@ -2,7 +2,7 @@
 
 use PHPMailer\PHPMailer\PHPMailer;
 
-class MailService implements IMailService
+class MailService
 {
     public function Send($subject, $body, $to, $name = null)
     {
@@ -16,7 +16,7 @@ class MailService implements IMailService
             $mail->SMTPAuth = true;
             $mail->setFrom(Config::$SMTP_USERNAME, Config::$SMTP_FROM);
             $mail->CharSet = "UTF-8";
-            
+
             // Recipients
             $mail->addAddress($to);
 

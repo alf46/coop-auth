@@ -2,9 +2,9 @@
 
 use Ramsey\Uuid\Uuid;
 
-class AuthService implements IAuthService
+class AuthService
 {
-    private IUserService $us;
+    private UserService $us;
 
     function __construct()
     {

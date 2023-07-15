@@ -1,6 +1,6 @@
 <?php class UserController
 {
-       private IUserService $us;
+       private UserService $us;
 
        function __construct()
        {

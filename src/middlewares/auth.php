@@ -9,7 +9,7 @@ require_once "acl.php";
 
 class AuthMiddleware
 {
-    private IUserService $us;
+    private UserService $us;
 
     function __construct()
     {

@@ -1,6 +1,6 @@
 <?php class AuthController
 {
-       private IAuthService $as;
+       private AuthService $as;
 
        function __construct()
        {
@@ -30,6 +30,14 @@
               $code = get($body, "code", true);
               $password = get($body, "password", true);
               $this->as->Recovery($code, $password);
+              return json($res, null);
+       }
+
+       public function ChangePassword($req, $res)
+       {
+              $body = $req->getParsedBody();
+              // $password = get($body, "password", true);
+              // $this->as->Recovery($code, $password);
               return json($res, null);
        }
 
